@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portal de Ubicaciones de Cámara para el registro y consulta de solicitudes internas.">
+  <title>Portal de Ubicaciones de Cámara</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="page-container">
+    <header class="site-header" role="banner">
+      <div class="brand-container">
+        <img src="logo.png" alt="Logo del Portal de Ubicaciones de Cámara" class="brand-logo" id="logoPortal">
+        <div class="brand-text">
+          <h1 id="tituloPortal">Portal de Ubicaciones de Cámara</h1>
+          <p id="subtituloPortal">Gestión de solicitudes internas</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="site-main" role="main">
+      <section id="loginSection" class="login-section" aria-labelledby="loginTitle">
+        <div class="card login-card">
+          <h2 id="loginTitle">Inicio de sesión</h2>
+          <p class="section-description">
+            Ingresa tu correo y PIN para acceder al portal de solicitudes.
+          </p>
+
+          <form id="loginForm" novalidate>
+            <div class="form-group">
+              <label for="correoLogin">Correo</label>
+              <input
+                type="email"
+                id="correoLogin"
+                name="correo"
+                autocomplete="email"
+                required
+                aria-required="true"
+                placeholder="usuario@empresa.com"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="pinLogin">PIN</label>
+              <input
+                type="password"
+                id="pinLogin"
+                name="pin"
+                inputmode="numeric"
+                autocomplete="current-password"
+                required
+                aria-required="true"
+                placeholder="Ingresa tu PIN"
+              >
+            </div>
+
+            <div class="button-group">
+              <button type="submit" id="btnLogin" class="btn btn-primary">
+                Ingresar
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="appSection" class="app-section" aria-labelledby="appTitle" hidden>
+        <div class="app-header">
+          <div>
+            <h2 id="appTitle">Panel de solicitudes</h2>
+            <p id="usuarioAutenticado" class="user-info" aria-live="polite"></p>
+          </div>
+
+          <div class="button-group app-actions">
+            <button type="button" id="btnActualizar" class="btn btn-secondary">
+              Actualizar
+            </button>
+            <button type="button" id="btnImprimirPdf" class="btn btn-secondary">
+              Imprimir / Guardar PDF
+            </button>
+            <button type="button" id="btnCerrarSesion" class="btn btn-outline">
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+
+        <section class="card form-card" aria-labelledby="formSolicitudTitle">
+          <h3 id="formSolicitudTitle">Registrar solicitud</h3>
+
+          <form id="solicitudForm" novalidate>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="tipoSolicitud">Tipo de solicitud</label>
+                <select
+                  id="tipoSolicitud"
+                  name="tipoSolicitud"
+                  required
+                  aria-required="true"
+                >
+                  <option value="">Selecciona una opción</option>
+                  <option value="Ubicación de cámara">Ubicación de cámara</option>
+                  <option value="Actualización de ubicación">Actualización de ubicación</option>
+                  <option value="Consulta de ubicación">Consulta de ubicación</option>
+                  <option value="Corrección de información">Corrección de información</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="prioridad">Prioridad</label>
+                <select
+                  id="prioridad"
+                  name="prioridad"
+                  required
+                  aria-required="true"
+                >
+                  <option value="">Selecciona una opción</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Media">Media</option>
+                  <option value="Baja">Baja</option>
+                </select>
+              </div>
+
+              <div class="form-group form-group-full">
+                <label for="titulo">Título</label>
+                <input
+                  type="text"
+                  id="titulo"
+                  name="titulo"
+                  required
+                  aria-required="true"
+                  maxlength="120"
+                  placeholder="Resumen breve de la solicitud"
+                >
+              </div>
+
+              <div class="form-group form-group-full">
+                <label for="descripcion">Descripción</label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  rows="5"
+                  required
+                  aria-required="true"
+                  placeholder="Describe la solicitud de forma clara"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button type="submit" id="btnRegistrarSolicitud" class="btn btn-primary">
+                Registrar solicitud
+              </button>
+              <button type="reset" id="btnLimpiarFormulario" class="btn btn-outline">
+                Limpiar
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card table-card" aria-labelledby="tablaSolicitudesTitle">
+          <div class="section-header">
+            <div>
+              <h3 id="tablaSolicitudesTitle">Mis solicitudes</h3>
+              <p class="section-description">
+                Consulta únicamente las solicitudes asociadas a tu usuario autenticado.
+              </p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table id="tablaSolicitudes">
+              <caption class="sr-only">
+                Listado de solicitudes registradas por el usuario autenticado
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">idSolicitud</th>
+                  <th scope="col">fechaRegistro</th>
+                  <th scope="col">tipoSolicitud</th>
+                  <th scope="col">titulo</th>
+                  <th scope="col">descripcion</th>
+                  <th scope="col">prioridad</th>
+                  <th scope="col">estado</th>
+                </tr>
+              </thead>
+              <tbody id="solicitudesTbody">
+                <tr id="filaSinSolicitudes">
+                  <td colspan="7">No existen solicitudes registradas para este usuario.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="messages-section" aria-label="Mensajes del sistema">
+        <div id="mensajeCarga" class="message message-loading" role="status" aria-live="polite" hidden>
+          Procesando solicitud, por favor espera...
+        </div>
+
+        <div id="mensajeExito" class="message message-success" role="status" aria-live="polite" hidden>
+          Operación realizada correctamente.
+        </div>
+
+        <div id="mensajeError" class="message message-error" role="alert" aria-live="assertive" hidden>
+          Ocurrió un error al procesar la operación.
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <p>
+        Portal demostrativo para gestión de solicitudes internas. El login no representa seguridad productiva.
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
